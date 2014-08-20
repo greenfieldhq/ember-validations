@@ -1,11 +1,15 @@
 Ember.Validations.validators.local.Confirmation = Ember.Validations.validators.Base.extend({
   init: function() {
     this.originalProperty = this.property;
-    this.property = this.property + 'Confirmation';
+    if (this.options.confirmationProperty === undefined) {
+      this.property = this.property + 'Confirmation';
+    } else {
+      this.property = this.get('options.confirmationProperty');
+    }
     this._super();
     this._dependentValidationKeys.pushObject(this.originalProperty);
     /*jshint expr:true*/
-    if (this.options === true) {
+    if (this.options != false) {
       this.set('options', { attribute: this.originalProperty });
       this.set('options', { message: Ember.Validations.messages.render('confirmation', this.options) });
     }
